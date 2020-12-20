@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 var db = require('./database');
 
-const ENV = process.env.NODE_ENV;
+const ENV = process.env.NODE_ENV || 'dev';
 const PORT = process.env.PORT || 5000;
 
 const app = express()
@@ -15,8 +15,16 @@ app.use(bodyParser.json());
 app.use('/api/cities', require('./api/cities'));
 app.use('/api/weather', require('./api/weather'));
 
+if (ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use((req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  })
+}
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
+  console.log(`Environment: ${ENV}`);
 });
 
 db.query('SELECT NOW()', (err, res) => {
