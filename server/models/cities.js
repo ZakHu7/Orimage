@@ -2,7 +2,7 @@ const db = require('../database');
 
 class Cities {
   static retrieveAll(callback) {
-    db.query('SELECT city_name from cities', function (err, res) {
+    db.query('SELECT city_name from cities', (err, res) => {
       if (err.error) {
         return callback(err);
       }
@@ -11,7 +11,7 @@ class Cities {
   }
 
   static insert(city, callback) {
-    db.query('INSERT INTO cities (city_name) VALUES ($1)', [city], function(err, res) {
+    db.query('INSERT INTO cities (city_name) VALUES ($1)', [city], (err, res) => {
       if (err.error) {
         return callback(err);
       }

@@ -8,9 +8,9 @@ class Weather {
     request({
       uri: `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
       json: true
-    }).then(function(res) {
+    }).then((res) => {
       callback(res);
-    }).catch(function(err) {
+    }).catch((err) => {
       console.log(err);
       callback({ error: 'Could not reach OpenWeatherMap API.' });
     })
