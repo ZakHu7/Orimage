@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 
 import Weather from './Weather';
+import CropDemo from './image/imageUpload';
 
 function App() {
 
@@ -99,6 +100,7 @@ function App() {
           </FormGroup>
         </Col>
       </Row>
+      <CropDemo />
       <Weather data={weather}/>
     </Container>
   );
