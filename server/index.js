@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { v1: uuidv1 } = require('uuid');
 
 var db = require('./database');
-var okta = require('./services/okta')
+var { oidc, getUser } = require('./services/okta')
 
 const ENV = process.env.NODE_ENV || 'dev';
 const PORT = process.env.PORT || 5000;
@@ -23,12 +23,24 @@ app.use(
     saveUninitialized: false
   })
 )
-app.use(okta.router);
+app.use(oidc.router);
+app.use(getUser);
+
+// testing user context
+app.get('/', (req, res) => {
+  res.redirect(`${process.env.CLIENT_URL}`);
+});
+app.get('/test', (req, res) => {
+  res.json({ profile: req.user ? req.user.profile : null });
+});
 
 // List of api endpoints
 app.use('/api/', require('./api/s3'));
 app.use('/api/cities', require('./api/cities'));
 app.use('/api/weather', require('./api/weather'));
+app.use('/user', require('./api/okta'));
+
+
 
 if (ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
