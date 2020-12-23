@@ -1,7 +1,14 @@
 body {
-  margin: 0;
-  padding: 0;
+  /* margin: 20px; */
+  /* padding: 20px; */
   font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+.main {
+  justify-content: center;
+  align-items: center;
+  text-align: center
 }
 
 .form-group {
@@ -20,4 +27,12 @@ body {
 
 .weather {
   margin-top: 30px
+}
+
+.nav-link {
+  color: rgba(255,255,255,.5);
+}
+
+.nav-link:hover {
+  color: rgba(255,255,255,.75);
 }
