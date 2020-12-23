@@ -1,8 +1,11 @@
 const path = require('path');
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
+const { v1: uuidv1 } = require('uuid');
 
 var db = require('./database');
+var okta = require('./services/okta')
 
 const ENV = process.env.NODE_ENV || 'dev';
 const PORT = process.env.PORT || 5000;
@@ -11,6 +14,16 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+// Okta Authentication
+app.use(
+  session({
+    secret: uuidv1(),
+    resave: true,
+    saveUninitialized: false
+  })
+)
+app.use(okta.router);
 
 // List of api endpoints
 app.use('/api/', require('./api/s3'));
