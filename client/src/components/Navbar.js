@@ -42,7 +42,8 @@ const NavigationBar = ({user}) => {
             <NavLink href="/personal">Personal</NavLink>
           </NavItem>}
         </Nav>
-        {!user && <NavLink onClick={login}>Login</NavLink>}
+        {/* {!user && <NavLink onClick={login}>Login</NavLink>} */}
+        {!user && <NavLink href={'/login'}>Login</NavLink>}
         {user && <NavbarText> hi {user.firstName} {user.lastName} </NavbarText> }
         {user && <NavLink onClick={logout}>Logout</NavLink>}
       </Navbar>

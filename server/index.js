@@ -27,9 +27,11 @@ app.use(oidc.router);
 app.use(getUser);
 
 // testing user context
-app.get('/', (req, res) => {
-  res.redirect(`${process.env.CLIENT_URL}`);
-});
+if (ENV !== 'production') {
+  app.get('/', (req, res) => {
+    res.redirect(`${process.env.CLIENT_URL}`);
+  });
+}
 app.get('/test', (req, res) => {
   res.json({ profile: req.user ? req.user.profile : null });
 });
