@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 
-function AboutUs() {
+function AboutUs(props) {
   const [test, setTest] = useState('');
 
   function login() {
@@ -27,6 +27,8 @@ function AboutUs() {
     <a onClick={testing}> TESTINg </a>
     <br/>
     {test}
+    <br/>
+    {props.title}
   </div>
   );
 }

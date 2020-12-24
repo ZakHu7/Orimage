@@ -1,20 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavbarText,
 } from 'reactstrap';
 
-const Example = (props) => {
+const NavigationBar = ({user}) => {
+
+  const login = () => {
+    fetch(`/user/login`)
+    .then(res => res.json())
+    .then(res => {
+      window.location = `${res.redirectUrl}`;
+    })
+  }
+
+  const logout = () => {
+    fetch(`/logout`, {
+      method: 'POST',
+    })
+    .then(res => res.json())
+    .then(res => {
+      // window.location = `${res.redirectUrl}`;
+    })
+  }
+
 
   return (
     <Container fluid>
@@ -22,16 +36,21 @@ const Example = (props) => {
         <NavbarBrand href="/">Orimage</NavbarBrand>
         <Nav className="mr-auto" navbar>
           <NavItem>
-            <NavLink href="/about">Components</NavLink>
+            <NavLink href="/about">Explore</NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-          </NavItem>
+          {user && <NavItem>
+            <NavLink href="/personal">Personal</NavLink>
+          </NavItem>}
         </Nav>
-        <NavLink href="/about">Login</NavLink>
+        {!user && <NavLink onClick={login}>Login</NavLink>}
+        {user && <NavbarText> hi {user.firstName} {user.lastName} </NavbarText> }
+        {user && <NavLink onClick={logout}>Logout</NavLink>}
       </Navbar>
+      <pre>
+      {JSON.stringify(user, null, 2)}
+      </pre>
     </Container>
   );
 }
 
-export default Example;
+export default NavigationBar;
