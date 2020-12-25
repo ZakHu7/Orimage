@@ -50,8 +50,7 @@ const NavigationBar = ({user, loginStatusChange}) => {
         {!user && process.env.NODE_ENV === "development" && <NavLink onClick={login}>Login</NavLink>}
         {!user && process.env.NODE_ENV === "production" && <NavLink href={'/login'}>Login</NavLink>}
         {user && <NavbarText> hi {user.firstName} {user.lastName} </NavbarText> }
-        {user && process.env.NODE_ENV === "development" && <NavLink onClick={logout}>Logout</NavLink>}
-        {user && process.env.NODE_ENV === "production" && <NavLink href={'/logout'}>Logout</NavLink>}
+        <NavLink onClick={logout}>Logout</NavLink>
       </Navbar>
       {/* <pre>
       {JSON.stringify(user, null, 2)}
