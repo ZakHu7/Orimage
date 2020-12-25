@@ -5,13 +5,13 @@ var router = express.Router();
 
 const singleUpload = S3.upload.single('image');
 
-router.post('/image-upload', (req, res) => {
-  singleUpload(req, res, (err) => {
-    if (err)
-      return res.json({error: err.message});
-    return res.json({'fileUrl': req.file.location})
-  })
-});
+// router.post('/image-upload', (req, res) => {
+//   singleUpload(req, res, (err) => {
+//     if (err)
+//       return res.json({error: err.message});
+//     return res.json({'fileUrl': req.file.location})
+//   })
+// });
 
 router.post('/image-delete', (req, res) => {
   var key = req.body.key;

@@ -7,7 +7,7 @@ const { v1: uuidv1 } = require('uuid');
 var db = require('./database');
 var { oidc, getUser } = require('./services/okta')
 
-const ENV = process.env.NODE_ENV || 'dev';
+const ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 5000;
 
 const app = express()
@@ -38,6 +38,7 @@ app.get('/test', (req, res) => {
 
 // List of api endpoints
 app.use('/api/', require('./api/s3'));
+app.use('/api/images', require('./api/images'));
 app.use('/api/cities', require('./api/cities'));
 app.use('/api/weather', require('./api/weather'));
 app.use('/user', require('./api/okta'));

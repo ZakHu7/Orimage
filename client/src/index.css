@@ -5,13 +5,13 @@ body {
   box-sizing: border-box;
 }
 
-.main {
+.centered {
   justify-content: center;
   align-items: center;
   text-align: center
 }
 
-.form-group {
+/* .form-group {
   width: 275px;
   margin: 0px auto;
 }
@@ -19,11 +19,7 @@ body {
 .input-group {
   width: 275px;
   margin: 0px auto;
-}
-
-.centered {
-  text-align: center
-}
+} */
 
 .weather {
   margin-top: 30px
@@ -35,4 +31,19 @@ body {
 
 .nav-link:hover {
   color: rgba(255,255,255,.75);
+}
+
+.react-crop {
+  max-height: 300px;
+}
+
+.ReactCrop__image {
+  display: block;
+  max-width: 100%;
+  max-height: fill-available;
+}
+
+.jumbotron{
+  margin-top: 10vh;
+  /* height: 88vh; */
 }

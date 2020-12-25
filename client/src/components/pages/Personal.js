@@ -12,17 +12,15 @@ import {
   FormGroup
 } from 'reactstrap';
 
-import CropDemo from '../services/imageUpload';
+import ImageForm from '../helper/ImageForm';
 
 function Personal() {
 
-  const [weather, setWeather] = useState(null);
-  const [cityList, setCityList] = useState([]);
-  const [newCityName, setNewCityName] = useState('');
+  const [isUpload, setIsUpload] = useState();
 
   return (
     <Container fluid>
-      <CropDemo />
+      <ImageForm />
     </Container>
   );
 }

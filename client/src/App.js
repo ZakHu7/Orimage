@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
 
-import Home from "./components/Home";
-import About from "./components/About"
-import Personal from "./components/Personal"
-import Error from "./components/Error";
-import Navbar from "./components/Navbar";
+import Home from "./components/pages/Home";
+import Explore from "./components/pages/Explore"
+import Personal from "./components/pages/Personal"
+import Error from "./components/pages/Error";
+import Navbar from "./components/helper/Navbar";
 
 import { Route, Switch } from "react-router-dom";
 
@@ -26,17 +26,25 @@ function App() {
 
   useEffect(() => {
     getLoginStatus();
+    console.log('Logout');
   }, [])
+
+  function handleLoginStatusChange() {
+    getLoginStatus();
+    console.log('user has logged out');
+  }
 
   return (
     <div className="main">
         <Navbar
           user={user}
+          loginStatusChange={handleLoginStatusChange}
         />
         <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/about" render={(props) => <About {...props} title={`Props through render`}/>} />
-            {user && <Route path="/personal" component={Personal} />}
+            <Route path="/explore" render={(props) => <Explore {...props} title={`Props through render`}/>} />
+            { <Route path="/personal" component={Personal} />}
+            {/* {user && <Route path="/personal" component={Personal} />} */}
             <Route component={Error} />
         </Switch>
     </div>

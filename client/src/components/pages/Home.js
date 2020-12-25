@@ -12,8 +12,8 @@ import {
   FormGroup
 } from 'reactstrap';
 
-import Weather from '../components/Weather';
-import CropDemo from '../services/imageUpload';
+import Weather from '../helper/Weather';
+import ImageForm from '../helper/ImageForm';
 
 function Home() {
 
@@ -95,7 +95,6 @@ function Home() {
           </FormGroup>
         </Col>
       </Row>
-      <CropDemo />
       <Weather data={weather}/>
     </Container>
   );

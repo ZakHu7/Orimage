@@ -9,7 +9,7 @@ import {
   NavbarText,
 } from 'reactstrap';
 
-const NavigationBar = ({user}) => {
+const NavigationBar = ({user, loginStatusChange}) => {
 
   const login = () => {
     fetch(`/user/login`)
@@ -22,34 +22,41 @@ const NavigationBar = ({user}) => {
   const logout = () => {
     fetch(`/logout`, {
       method: 'POST',
+      mode: 'no-cors'
     })
     .then(res => res.json())
     .then(res => {
-      // window.location = `${res.redirectUrl}`;
+      loginStatusChange();
+      console.log(res);
     })
   }
 
 
   return (
     <Container fluid>
-      <Navbar color="dark" dark expand="md">
+      <Navbar fixed="top" color="dark" dark expand="md">
         <NavbarBrand href="/">Orimage</NavbarBrand>
         <Nav className="mr-auto" navbar>
           <NavItem>
-            <NavLink href="/about">Explore</NavLink>
+            <NavLink href="/explore">Explore</NavLink>
           </NavItem>
-          {user && <NavItem>
+          {<NavItem>
             <NavLink href="/personal">Personal</NavLink>
           </NavItem>}
+          {/* {user && <NavItem>
+            <NavLink href="/personal">Personal</NavLink>
+          </NavItem>} */}
         </Nav>
-        {/* {!user && <NavLink onClick={login}>Login</NavLink>} */}
-        {!user && <NavLink href={'/login'}>Login</NavLink>}
+        {!user && process.env.NODE_ENV === "development" && <NavLink onClick={login}>Login</NavLink>}
+        {!user && process.env.NODE_ENV === "production" && <NavLink href={'/login'}>Login</NavLink>}
         {user && <NavbarText> hi {user.firstName} {user.lastName} </NavbarText> }
-        {user && <NavLink onClick={logout}>Logout</NavLink>}
+        {user && process.env.NODE_ENV === "development" && <NavLink onClick={logout}>Logout</NavLink>}
+        {user && process.env.NODE_ENV === "production" && <NavLink href={'/logout'}>Logout</NavLink>}
       </Navbar>
-      <pre>
+      {/* <pre>
       {JSON.stringify(user, null, 2)}
-      </pre>
+      {process.env.NODE_ENV}
+      </pre> */}
     </Container>
   );
 }
