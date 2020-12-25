@@ -32,7 +32,6 @@ function Template() {
     .then(res => res.json())
     .then(res => {
       var newCityList = res.map(r => r.city_name);
-      console.log(newCityList);
       setCityList(newCityList);
     })
   }

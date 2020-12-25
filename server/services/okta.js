@@ -23,7 +23,7 @@ const oidc = new ExpressOIDC({
 
 const getUser = (req, res, next) => {
   if (!req.userContext) {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    if ((!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && process.env.DEV_USER === 'dev') {
       req.user = {
         profile: {
           firstName: "DEV",

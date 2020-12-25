@@ -17,21 +17,16 @@ function App() {
     .then(res => res.json())
     .then(res => {
       setUser(res.user);
-      console.log(res.user);
-      console.log(JSON.stringify(res.user))
       localStorage.setItem('user', JSON.stringify(res.user));
-      console.log(user);
     })
   }
 
   useEffect(() => {
     getLoginStatus();
-    console.log('Logout');
   }, [])
 
   function handleLoginStatusChange() {
     getLoginStatus();
-    console.log('user has logged out');
   }
 
   return (
@@ -43,8 +38,8 @@ function App() {
         <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/explore" render={(props) => <Explore {...props} title={`Props through render`}/>} />
-            { <Route path="/personal" component={Personal} />}
-            {/* {user && <Route path="/personal" component={Personal} />} */}
+            {/* { <Route path="/personal" component={Personal} />} */}
+            {user && <Route path="/personal" render={(props) => <Personal {...props} user={user}/>} />}
             <Route component={Error} />
         </Switch>
     </div>
