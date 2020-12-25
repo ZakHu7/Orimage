@@ -1,9 +1,7 @@
 import React, {useState, useRef, useCallback} from 'react'
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { 
-  Row,
-  Col,
+import {
   Input,
   Button,
   Form,
@@ -13,14 +11,14 @@ import {
   Alert,
   CustomInput,
   FormFeedback,
+  Spinner,
 } from 'reactstrap';
-import { validate } from 'uuid';
 
-function ImageForm() {
+function ImageForm({afterCreatePost}) {
   const [upImg, setUpImg] = useState(null);
   const imgRef = useRef(null);
   const [crop, setCrop] = useState({ unit: "%", width: 100, aspect: 1 / 1 });
-  const [testImg, setTestImg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState("");
   const [author, setAuthor] = useState("");
@@ -78,10 +76,11 @@ function ImageForm() {
   }
 
   async function uploadImage(event) {
+    setIsLoading(true);
     if (validate()) {
       return;
     }
-
+    
     const blobURL = await getCroppedImg(imgRef.current, crop, 'preview.jpg')
 
     var formData = new FormData();
@@ -95,10 +94,11 @@ function ImageForm() {
     })
     .then(res => res.json())
     .then(res => {
+      setIsLoading(false);
       if (res.error) {
         setError(res.error);
       } else {
-        setTestImg(res.fileUrl);
+        afterCreatePost();
       }
     })
     .catch(err => {console.log(err)});
@@ -128,46 +128,43 @@ function ImageForm() {
   }, []);
 
   return (
-    <Row>
-      <Col xs="3"></Col>
-      <Col>
-        <Jumbotron>
-          <h1 className="display-3">Create Post</h1>
-          <p className="lead">Create a post of your origami model!</p>
-          <hr className="my-2" />
-          {error && <Alert color="danger">
-            {error}
-          </Alert>}
-          <Form>
-            <FormGroup>
-              <Label for="fileInput">File Browser</Label>
-              <CustomInput type="file" id="fileInput" name="customFile" accept="image/*" 
-                onChange={handleFileChange} invalid={!validInput.image}/>
-              <span className='centered'>
-                <ReactCrop
-                  className="react-crop"
-                  src={upImg}
-                  onImageLoaded={onLoad}
-                  crop={crop}
-                  onChange={(c) => setCrop(c)}
-                  // onComplete={(c) => setCompletedCrop(c)}
-                />
-              </span>
-              <img src={testImg}></img>
-            </FormGroup>
-            <FormGroup>
-              <Label for="authorInput" id="authorLabel">Author</Label>
-              <Input name="author" id="authorInput" placeholder="Enter the author"
-                onChange={(e) => handleInputChange(e, setAuthor, 'author')} invalid={!validInput.author}/>
-              <FormFeedback>Oh no! Please give the author</FormFeedback>
-            </FormGroup>
+    <Jumbotron className="personal-jumbotron">
+      <h1 className="display-4">Create Post</h1>
+      <p className="lead">Create a post of your origami model!</p>
+      <hr className="my-2" />
+      {error && <Alert color="danger">
+        {error}
+      </Alert>}
+      <Form>
+        <FormGroup>
+          <Label for="fileInput">File Browser</Label>
+          <CustomInput type="file" id="fileInput" name="customFile" accept="image/*" 
+            onChange={handleFileChange} invalid={!validInput.image}/>
+          <span className='centered'>
+            <ReactCrop
+              className="react-crop"
+              src={upImg}
+              onImageLoaded={onLoad}
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              // onComplete={(c) => setCompletedCrop(c)}
+            />
+          </span>
+        </FormGroup>
+        <FormGroup>
+          <Label for="authorInput" id="authorLabel">Author</Label>
+          <Input name="author" id="authorInput" placeholder="Enter the author"
+            onChange={(e) => handleInputChange(e, setAuthor, 'author')} invalid={!validInput.author}/>
+          <FormFeedback>Oh no! Please give the author</FormFeedback>
+        </FormGroup>
 
-            <Button onClick={uploadImage}>Submit</Button>
-          </Form>
-        </Jumbotron>
-      </Col>
-      <Col xs="3"></Col>
-    </Row>
+        <Button onClick={uploadImage}>Submit</Button>
+      </Form>
+      
+      {isLoading && <div className="loading-spinner-container">
+        <Spinner size="xl" color="info" className="loading-spinner" />
+      </div>}
+    </Jumbotron>
   )
 }
 

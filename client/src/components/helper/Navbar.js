@@ -20,37 +20,37 @@ const NavigationBar = ({user, loginStatusChange}) => {
   }
 
   const logout = () => {
-    fetch(`/logout`, {
-      method: 'POST',
-      mode: 'no-cors'
-    })
+    fetch(`/user/logout`)
     .then(res => res.json())
     .then(res => {
       loginStatusChange();
-      console.log(res);
+      window.location = `${res.redirectUrl}`;
     })
+    .catch(err => {
+      console.log(err)
+    });
   }
 
 
   return (
     <Container fluid>
-      <Navbar fixed="top" color="dark" dark expand="md">
+      <Navbar className="sticky-nav" color="dark" dark expand="md">
         <NavbarBrand href="/">Orimage</NavbarBrand>
         <Nav className="mr-auto" navbar>
           <NavItem>
             <NavLink href="/explore">Explore</NavLink>
           </NavItem>
-          {<NavItem>
-            <NavLink href="/personal">Personal</NavLink>
-          </NavItem>}
-          {/* {user && <NavItem>
+          {/* {<NavItem>
             <NavLink href="/personal">Personal</NavLink>
           </NavItem>} */}
+          {user && <NavItem>
+            <NavLink href="/personal">Personal</NavLink>
+          </NavItem>}
         </Nav>
         {!user && process.env.NODE_ENV === "development" && <NavLink onClick={login}>Login</NavLink>}
         {!user && process.env.NODE_ENV === "production" && <NavLink href={'/login'}>Login</NavLink>}
-        {user && <NavbarText> hi {user.firstName} {user.lastName} </NavbarText> }
-        <NavLink onClick={logout}>Logout</NavLink>
+        {user && <NavbarText> Hi {user.firstName} {user.lastName} </NavbarText> }
+        {user && <NavLink onClick={logout}>Logout</NavLink> }
       </Navbar>
       {/* <pre>
       {JSON.stringify(user, null, 2)}

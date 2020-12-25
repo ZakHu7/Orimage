@@ -10,10 +10,11 @@ router.get('/login', (req, res) => {
   })
 });
 
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
+  req.logout();
   return res.status(200).json({
     success: true,
-    redirectUrl: `${process.env.HOST_URL}/logout`
+    redirectUrl: `${process.env.CLIENT_URL}`
   })
 });
 

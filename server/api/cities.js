@@ -4,7 +4,7 @@ var Cities = require('../models/cities');
 var router = express.Router();
 
 router.get('/', (req, res) => {
-  Cities.retrieveAll((err, cities) => {
+  Cities.getAll((cities, err) => {
     if (err) {
       return res.json(err);
     }
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   var city = req.body.city;
 
-  Cities.insert(city, (err, result) => {
+  Cities.create(city, (result, err) => {
     if (err) {
       return res.json(err);
     }
