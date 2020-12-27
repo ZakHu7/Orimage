@@ -22,7 +22,6 @@ function PersonalImages() {
     fetch(`/api/images/user-images`)
     .then(res => res.json())
     .then(res => {
-      // var newCityList = res.map(r => r.city_name);
       setImageList(res);
     })
   }
@@ -34,7 +33,10 @@ function PersonalImages() {
           <div className="dim-image-container">
             <CardImg className="dim-image" top width="100%" src={image.url} alt="Card image cap" />
             <div className="image-text-container">
-              <CardSubtitle tag="h6">Author: {image.author}</CardSubtitle>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">Designer: {image.designed_by}</CardSubtitle>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">Folded By: {image.folded_by}</CardSubtitle>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">Model: {image.model}</CardSubtitle>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">Difficulty: {image.difficulty}</CardSubtitle>
             </div>
           </div>
         </Card>
@@ -50,6 +52,7 @@ function PersonalImages() {
     <Jumbotron className="personal-jumbotron">
       <Row>
         {imageList && imageList.map((image) => createCards(image))}
+        {imageList.length === 0 && <p className="lead">Create and upload your own images. Then view them here!</p>}
       </Row>
     </Jumbotron>
   )

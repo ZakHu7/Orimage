@@ -1,11 +1,13 @@
 const db = require('../database');
 
 class Images {
-  static create(url, user_id, author, callback) {
+  static create(params, callback) {
     db.query(`
-    INSERT INTO images (url, user_id, author)
-    VALUES ($1, $2, $3)`,
-    [url, user_id, author], (err, res) => {
+    INSERT INTO images (url, user_id, designed_by, folded_by, category, model, difficulty)
+    VALUES ($1, $2, $3, $4, $5, $6)`,
+    [params.url, params.user_id, params.designed_by,
+      params.folded_by, params.category, params.model,
+      params.difficulty], (err, res) => {
       if (err.error) {
         return callback(err);
       }

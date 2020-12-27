@@ -1,36 +1,46 @@
 import React, {useState} from "react"
 
-function AboutUs(props) {
+import {
+  Container,
+  Row,
+  Col,
+  ButtonToggle 
+} from 'reactstrap';
+
+function Explore(props) {
   const [test, setTest] = useState('');
 
   function login() {
     fetch(`/user/login`)
-    .then(res => res.json("this is test"))
+    .then(res => res.json())
     .then(res => {
       window.location = `${res.redirectUrl}`;
     })
   }
 
-  function testing() {
-    fetch(`/test`)
-    .then(res => res.json())
-    .then(res => {
-      setTest(JSON.stringify(res))
-    })
-  }
-
   return (
-  <div>
-    <h1>About Us</h1>
-    <a onClick={login}> LOGIN </a>
-    <br/>
-    <a onClick={testing}> TESTINg </a>
-    <br/>
-    {test}
-    <br/>
-    {props.title}
-  </div>
+    <Container fluid>
+      <Row>
+        <Col sm="3"></Col>
+        <Col>
+            <Row>
+              <Col>
+                <h1 className="display-3">Explore Models!</h1>
+              </Col>
+              <Col sm="2">
+                <ButtonToggle className="header-button" >Filter</ButtonToggle>
+              </Col>
+            </Row>
+            <hr className="my-3" />
+
+
+
+
+        </Col>
+        <Col sm="3"></Col>
+      </Row>
+    </Container>
   );
 }
 
-export default AboutUs
+export default Explore

@@ -37,8 +37,7 @@ function App() {
         />
         <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/explore" render={(props) => <Explore {...props} title={`Props through render`}/>} />
-            {/* { <Route path="/personal" component={Personal} />} */}
+            <Route path="/explore" render={(props) => <Explore {...props} />} />
             {user && <Route path="/personal" render={(props) => <Personal {...props} user={user}/>} />}
             <Route component={Error} />
         </Switch>

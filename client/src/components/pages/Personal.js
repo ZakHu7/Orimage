@@ -33,7 +33,8 @@ function Personal({user}) {
                 <h1 className="display-3">{user.firstName} {user.lastName}</h1>
               </Col>
               <Col sm="2">
-                <ButtonToggle className="create-post-button" onClick={toggleIsCreate}>Create</ButtonToggle>
+                {!isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Create</ButtonToggle>}
+                {isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Images</ButtonToggle>}
               </Col>
             </Row>
             <hr className="my-3" />

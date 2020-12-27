@@ -16,11 +16,16 @@ router.post('/image-upload', (req, res) => {
   singleUpload(req, res, (err) => {
     if (err)
       return res.json({error: err.message});
-
-    const url = req.file.location;
-    const user_id = req.user.id;
-    const author = req.body.author;
-    Images.create(url, user_id, author, (result, err) => {
+    const params = {
+      url: req.file.location,
+      user_id: req.user.id,
+      designed_by: req.body.designedBy,
+      folded_by: req.body.foldedBy,
+      category: req.body.category,
+      model: req.body.model,
+      difficulty: req.body.difficulty,
+    }
+    Images.create(params, (result, err) => {
       if (err) {
         return res.json(err);
       }

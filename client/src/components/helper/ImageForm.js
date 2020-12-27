@@ -12,7 +12,10 @@ import {
   CustomInput,
   FormFeedback,
   Spinner,
+  Col,
 } from 'reactstrap';
+
+const difficultyList = ["Easy", "Normal", "Hard"];
 
 function ImageForm({afterCreatePost}) {
   const [upImg, setUpImg] = useState(null);
@@ -21,10 +24,19 @@ function ImageForm({afterCreatePost}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState("");
-  const [author, setAuthor] = useState("");
+  const [designedBy, setDesignedBy] = useState("");
+  const [foldedBy, setFoldedBy] = useState("");
+  const [category, setCategory] = useState("");
+  const [model, setModel] = useState("");
+  const [difficulty, setDifficulty] = useState(difficultyList[1]);
+
   const [validInput, setValidInput] = useState({
     image: true,
-    author: true
+    designedBy: true,
+    foldedBy: true,
+    category: true,
+    model: true,
+    difficulty: true,
   });
   
   const validate = () => {
@@ -34,8 +46,24 @@ function ImageForm({afterCreatePost}) {
       tmpValidInput["image"] = false;
       foundError = true;
     }
-    if (author === "") {
-      tmpValidInput["author"] = false;
+    if (designedBy === "") {
+      tmpValidInput["designedBy"] = false;
+      foundError = true;
+    }
+    if (foldedBy === "") {
+      tmpValidInput["foldedBy"] = false;
+      foundError = true;
+    }
+    if (category === "") {
+      tmpValidInput["category"] = false;
+      foundError = true;
+    }
+    if (model === "") {
+      tmpValidInput["model"] = false;
+      foundError = true;
+    }
+    if (difficulty === "") {
+      tmpValidInput["difficulty"] = false;
       foundError = true;
     }
     setValidInput(tmpValidInput);
@@ -76,17 +104,19 @@ function ImageForm({afterCreatePost}) {
   }
 
   async function uploadImage(event) {
-    setIsLoading(true);
     if (validate()) {
       return;
     }
+    setIsLoading(true);
     
     const blobURL = await getCroppedImg(imgRef.current, crop, 'preview.jpg')
 
     var formData = new FormData();
     formData.append("image", blobURL);
-    formData.append("author", author);
-    console.log(author);
+    formData.append("designedBy", designedBy);
+    formData.append("foldedBy", foldedBy);
+    formData.append("category", category);
+    formData.append("model", model);
 
     fetch(`/api/images/image-upload`, {
       method: 'post',
@@ -101,7 +131,10 @@ function ImageForm({afterCreatePost}) {
         afterCreatePost();
       }
     })
-    .catch(err => {console.log(err)});
+    .catch(err => {
+      console.log(err);
+      setIsLoading(false);
+    });
   }
 
   const handleFileChange = (e) => {
@@ -152,10 +185,54 @@ function ImageForm({afterCreatePost}) {
           </span>
         </FormGroup>
         <FormGroup>
-          <Label for="authorInput" id="authorLabel">Author</Label>
-          <Input name="author" id="authorInput" placeholder="Enter the author"
-            onChange={(e) => handleInputChange(e, setAuthor, 'author')} invalid={!validInput.author}/>
-          <FormFeedback>Oh no! Please give the author</FormFeedback>
+          <Label for="modelInput" id="modelLabel">Model (Eg. Tiger, Plane, Acorn)</Label>
+          <Input name="model" id="modelInput" placeholder="What is the model?"
+            onChange={(e) => handleInputChange(e, setModel, 'model')} invalid={!validInput.model}/>
+          <FormFeedback>Enter the what kind of thing the model is</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Label for="designedByInput" id="designedByLabel">Designed By</Label>
+          <Input name="designedBy" id="designedByInput" placeholder="Enter the designer"
+            onChange={(e) => handleInputChange(e, setDesignedBy, 'designedBy')} invalid={!validInput.designedBy}/>
+          <FormFeedback>Oh no! Please give the designer</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Label for="foldedByInput" id="foldedByLabel">Folded By</Label>
+          <Input name="foldedBy" id="foldedByInput" placeholder="Enter the person who folded the model"
+            onChange={(e) => handleInputChange(e, setFoldedBy, 'foldedBy')} invalid={!validInput.foldedBy}/>
+          <FormFeedback>Who folded the model in the picture?</FormFeedback>
+        </FormGroup>
+        <FormGroup>
+          <Label for="categoryInput" id="categoryLabel">Category (Eg. Animal, Fantasy, Human)</Label>
+          <Input name="category" id="categoryInput" placeholder="Enter the category"
+            onChange={(e) => handleInputChange(e, setCategory, 'category')} invalid={!validInput.category}/>
+          <FormFeedback>Oh no! Please give the category</FormFeedback>
+        </FormGroup>
+        <FormGroup tag="fieldset" row>
+          <legend className="col-form-label col-sm-2">Difficulty</legend>
+          <Col sm={10}>
+            <FormGroup check>
+              <Label check>
+                <Input type="radio" name="radio2" checked={difficulty === difficultyList[0]}
+                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                {difficultyList[0]}
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input type="radio" name="radio2" checked={difficulty === difficultyList[1]}
+                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                {difficultyList[1]}
+              </Label>
+            </FormGroup>
+            <FormGroup check disabled>
+              <Label check>
+                <Input type="radio" name="radio2" checked={difficulty === difficultyList[2]}
+                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                {difficultyList[2]}
+              </Label>
+            </FormGroup>
+          </Col>
         </FormGroup>
 
         <Button onClick={uploadImage}>Submit</Button>

@@ -32,9 +32,6 @@ if (ENV !== 'production') {
     res.redirect(`${process.env.CLIENT_URL}`);
   });
 }
-app.get('/test', (req, res) => {
-  res.json({ profile: req.user ? req.user.profile : null });
-});
 
 // List of api endpoints
 app.use('/api/', require('./api/s3'));
