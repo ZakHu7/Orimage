@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import {
   CardSubtitle,
-  CardTitle,
+  Button,
   Jumbotron,
   Row,
   Col,
@@ -11,12 +11,21 @@ import {
   CardImg,
   CardBody,
   Alert,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from 'reactstrap';
 
 function PersonalImages() {
   const [imageList, setImageList] = useState([]);
   const [imageListError, setImageListError] = useState("");
+  const [imageToDelete, setImageToDelete] = useState(null);
 
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+  
   const getUserImages = () => {
     fetch(`/api/images/user-images`)
     .then(res => res.json())
@@ -30,6 +39,38 @@ function PersonalImages() {
     })
   }
 
+  const deleteImage = (image) => {
+    fetch(`/api/images/delete-image`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageId: image.id,
+        userId: image.user_id,
+        imageKey: image.imagekey,
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.error) {
+        console.log(res);
+      } else {
+        toggle();
+        getUserImages();
+      }
+    })
+  }
+
+  const handleDeleteChange = (image, e) => {
+    console.log(image);
+    toggle();
+    setImageToDelete(image);
+  };
+
+  const handleDeleteImage = (e) => {
+    deleteImage(imageToDelete);
+  };
+
+
   const createPersonalCards = (image) => {
     return (
       <Col sm="4" className="small-card-container" key={image.id}>
@@ -41,6 +82,7 @@ function PersonalImages() {
               <CardSubtitle tag="h6" className="mb-2">Folded By: {image.folded_by}</CardSubtitle>
               <CardSubtitle tag="h6" className="mb-2">Model: {image.model}</CardSubtitle>
               <CardSubtitle tag="h6" className="mb-2">Difficulty: {image.difficulty}</CardSubtitle>
+              <Button color="danger" onClick={(e) => handleDeleteChange(image, e)}>DELETE</Button>
             </div>
           </div>
         </Card>
@@ -61,6 +103,17 @@ function PersonalImages() {
         {imageList && imageList.map((image) => createPersonalCards(image))}
         {imageList.length === 0 && <p className="lead">Create and upload your own images. Then view them here!</p>}
       </Row>
+
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Permanently Delete Image</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete this image?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleDeleteImage}>Yes</Button>{' '}
+          <Button color="secondary" onClick={toggle}>No</Button>
+        </ModalFooter>
+      </Modal>
     </Jumbotron>
   )
 }

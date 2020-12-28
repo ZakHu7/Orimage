@@ -59,10 +59,30 @@ router.get('/all-images/:lastDateTime', (req, res) => {
   })
 });
 
+router.post('/delete-image', (req, res) => {
+  var imageId = req.body.imageId;
+  var userId = req.body.userId;
+  var key = req.body.imageKey;
+
+  if (userId !== req.user.id)
+      return res.status(400).send({error: "Please login to delete this image"});
+  S3.delete(key, (result, err) => {
+    if (err) {
+      return res.json(err);
+    }
+    Images.deleteImage(imageId, (images, err) => {
+      if (err) {
+        return res.json(err);
+      }
+      return res.json(images);
+    })
+  })
+});
+
 router.post('/image-delete', (req, res) => {
   var key = req.body.key;
 
-  S3.delete(key, (err, result) => {
+  S3.delete(key, (result, err) => {
     if (err) {
       return res.json(err);
     }

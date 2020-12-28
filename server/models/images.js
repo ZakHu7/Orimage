@@ -40,6 +40,18 @@ class Images {
       callback(res);
     })
   }
+
+  static deleteImage(id, callback) {
+    db.query(
+      `DELETE FROM images
+      WHERE id = $1;`,
+      [id], (err, res) => {
+      if (err.error) {
+        return callback(null, err);
+      }
+      callback(res);
+    })
+  }
 }
 
 module.exports = Images;

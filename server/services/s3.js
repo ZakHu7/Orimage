@@ -44,7 +44,7 @@ class S3 {
     }
     s3.deleteObject(params, (err, data) => {
       if (err)
-        return callback(err);  // error
+        return callback(null, err);  // error
       callback(data);              // deleted
     });
   }
