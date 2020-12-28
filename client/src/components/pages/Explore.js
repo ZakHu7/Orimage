@@ -100,9 +100,7 @@ function Explore() {
             <UncontrolledCollapse toggler="#filterToggle">
               <Card>
                 <CardBody>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni, voluptas debitis
-                  similique porro a molestias consequuntur earum odio officiis natus, amet hic, iste sed
-                  dignissimos esse fuga! Minus, alias.
+                  Filter is not implemented at this time
                 </CardBody>
               </Card>
             </UncontrolledCollapse>
@@ -116,6 +114,7 @@ function Explore() {
               loader={<h4 className="display-4">Loading... </h4>}
               endMessage={
                 <p style={{ textAlign: 'center' }}>
+                  <hr className="my-3" />
                   <div className="lead" tag="h5">Yay! You have seen it all</div>
                 </p>
               }

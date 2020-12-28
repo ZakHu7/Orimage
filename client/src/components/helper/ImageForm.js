@@ -17,7 +17,7 @@ import {
 
 const difficultyList = ["Easy", "Normal", "Hard"];
 
-function ImageForm({afterCreatePost}) {
+function ImageForm({afterCreatePost, name}) {
   const [upImg, setUpImg] = useState(null);
   const imgRef = useRef(null);
   const [crop, setCrop] = useState({ unit: "%", width: 100, aspect: 1 / 1 });
@@ -25,7 +25,7 @@ function ImageForm({afterCreatePost}) {
 
   const [error, setError] = useState("");
   const [designedBy, setDesignedBy] = useState("");
-  const [foldedBy, setFoldedBy] = useState("");
+  const [foldedBy, setFoldedBy] = useState(name);
   const [category, setCategory] = useState("");
   const [model, setModel] = useState("");
   const [difficulty, setDifficulty] = useState(difficultyList[1]);
@@ -199,7 +199,8 @@ function ImageForm({afterCreatePost}) {
         <FormGroup>
           <Label for="foldedByInput" id="foldedByLabel">Folded By</Label>
           <Input name="foldedBy" id="foldedByInput" placeholder="Enter the person who folded the model"
-            onChange={(e) => handleInputChange(e, setFoldedBy, 'foldedBy')} invalid={!validInput.foldedBy}/>
+            onChange={(e) => handleInputChange(e, setFoldedBy, 'foldedBy')} invalid={!validInput.foldedBy}
+            value={foldedBy}/>
           <FormFeedback>Who folded the model in the picture?</FormFeedback>
         </FormGroup>
         <FormGroup>

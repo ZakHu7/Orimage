@@ -11,8 +11,9 @@ import ImageForm from '../helper/ImageForm';
 import PersonalImages from '../helper/PersonalImages';
 
 function Personal({user}) {
-
   const [isCreate, setIsCreate] = useState(false);
+
+  const name = user.firstName + " " + user.lastName;
 
   const toggleIsCreate = () => {
     const curIsCreate = isCreate;
@@ -30,7 +31,7 @@ function Personal({user}) {
         <Col>
           <Row>
             <Col>
-              <h1 className="display-3">{user.firstName} {user.lastName}</h1>
+              <h1 className="display-3">{name}</h1>
             </Col>
             <Col sm="2">
               {!isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Create</ButtonToggle>}
@@ -42,7 +43,7 @@ function Personal({user}) {
 
 
         {!isCreate && <PersonalImages />}
-        {isCreate && <ImageForm afterCreatePost={afterCreatePost} />}
+        {isCreate && <ImageForm afterCreatePost={afterCreatePost} name={name} />}
 
 
 
