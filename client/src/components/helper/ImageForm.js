@@ -117,6 +117,7 @@ function ImageForm({afterCreatePost}) {
     formData.append("foldedBy", foldedBy);
     formData.append("category", category);
     formData.append("model", model);
+    formData.append("difficulty", difficulty);
 
     fetch(`/api/images/image-upload`, {
       method: 'post',
@@ -180,7 +181,6 @@ function ImageForm({afterCreatePost}) {
               onImageLoaded={onLoad}
               crop={crop}
               onChange={(c) => setCrop(c)}
-              // onComplete={(c) => setCompletedCrop(c)}
             />
           </span>
         </FormGroup>
@@ -213,22 +213,22 @@ function ImageForm({afterCreatePost}) {
           <Col sm={10}>
             <FormGroup check>
               <Label check>
-                <Input type="radio" name="radio2" checked={difficulty === difficultyList[0]}
-                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                <Input type="radio" name="difficulty" checked={difficulty === difficultyList[0]}
+                value={difficultyList[0]} onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
                 {difficultyList[0]}
               </Label>
             </FormGroup>
             <FormGroup check>
               <Label check>
-                <Input type="radio" name="radio2" checked={difficulty === difficultyList[1]}
-                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                <Input type="radio" name="difficulty" checked={difficulty === difficultyList[1]}
+                value={difficultyList[1]} onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
                 {difficultyList[1]}
               </Label>
             </FormGroup>
             <FormGroup check disabled>
               <Label check>
-                <Input type="radio" name="radio2" checked={difficulty === difficultyList[2]}
-                onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
+                <Input type="radio" name="difficulty" checked={difficulty === difficultyList[2]}
+                value={difficultyList[2]} onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}
                 {difficultyList[2]}
               </Label>
             </FormGroup>

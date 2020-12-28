@@ -13,7 +13,7 @@ function Weather(props) {
         <h2>{data.name}</h2>
         <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} alt="Weather Icon"/>
         <span>{data.weather[0].main}</span>&nbsp;
-        <span>{Math.floor(data.main.temp)}&deg;F</span>
+        <span>{Math.floor(data.main.temp)}&deg;C</span>
         <Table>
           <tbody>
             <tr>

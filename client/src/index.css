@@ -81,8 +81,12 @@ body {
   opacity: 1;
 }
 
-.card-container {
+.small-card-container {
   margin-bottom: 15px;
+}
+
+.large-card-container {
+  margin-bottom: 35px;
 }
 
 .loading-spinner-container {
@@ -102,4 +106,8 @@ body {
 .loading-spinner {
   position: absolute;
   top: 50%;
+}
+
+.infinite-scroll-component__outerdiv {
+  width: 100%;
 }

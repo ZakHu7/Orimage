@@ -18,6 +18,7 @@ router.post('/image-upload', (req, res) => {
       return res.json({error: err.message});
     const params = {
       url: req.file.location,
+      imageKey: req.file.key,
       user_id: req.user.id,
       designed_by: req.body.designedBy,
       folded_by: req.body.foldedBy,
@@ -26,9 +27,8 @@ router.post('/image-upload', (req, res) => {
       difficulty: req.body.difficulty,
     }
     Images.create(params, (result, err) => {
-      if (err) {
+      if (err)
         return res.json(err);
-      }
       return res.json({'fileUrl': req.file.location})
     })
   })
@@ -41,6 +41,17 @@ router.get('/user-images', (req, res) => {
   }
   const user_id = req.user.id;
   Images.getUserImages(user_id, (images, err) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(images);
+  })
+});
+
+router.get('/all-images/:lastDateTime', (req, res) => {
+  const lastDateTime = req.params.lastDateTime;
+
+  Images.getAllImages(lastDateTime, (images, err) => {
     if (err) {
       return res.json(err);
     }
