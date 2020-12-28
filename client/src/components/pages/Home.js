@@ -12,8 +12,7 @@ import {
   FormGroup
 } from 'reactstrap';
 
-import Weather from '../helper/Weather';
-import ImageForm from '../helper/ImageForm';
+import gif from '../../media/origami_01.gif';
 
 function Home() {
 
@@ -63,38 +62,30 @@ function Home() {
   return (
     <Container fluid>
       <Row>
+        <Col sm="2">
+        </Col>
         <Col>
           <Jumbotron>
-            <h1 className="display-3">ImageRepo</h1>
-            <p className="lead">Current weather for cities</p>
-          <InputGroup>
-            <Input
-              placeholder="New city name..."
-              value={newCityName}
-              onChange={(e) => setNewCityName(e.target.value)}
-            />
-            <InputGroupAddon addonType="append">
-              <Button color="primary" onClick={handleAddCity}>Add City</Button>
-            </InputGroupAddon>
-          </InputGroup>
+            <Row>
+              <Col sm="2">
+              </Col>
+              <Col sm="8">
+                <h1 className="display-3">ImageRepo</h1>
+                <p className="lead">View and upload your images of origami!</p>
+                <hr className="my-3" />
+                <img src={gif} className="crane-gif"></img>
+                <hr className="my-3" />
+                <small className="lead gif-text">Gif from CharlotteCambon</small>
+              </Col>
+              <Col sm="2">
+              </Col>
+            </Row>
           </Jumbotron>
         </Col>
-      </Row>
-      <Row>
-        <Col>
-          {JSON.stringify(cityList)}
-          {newCityName}
-          <h1 className="display-5">Current Weather</h1>
-          <FormGroup>
-            <Input type="select" onChange={(e) => handleChangeCity(e)}>
-              { cityList.length === 0 && <option>No cities found</option> }
-              { cityList.length !== 0 && <option>Select a city</option> }
-              { cityList.map((city, i) => <option key={i}>{city}</option>) }
-            </Input>
-          </FormGroup>
+        <Col sm="2">
         </Col>
       </Row>
-      <Weather data={weather}/>
+      
     </Container>
   );
 }

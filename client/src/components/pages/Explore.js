@@ -5,7 +5,7 @@ import {
   Container,
   Row,
   Col,
-  ButtonToggle,
+  Button,
   Card,
   CardImg,
   CardSubtitle,
@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardBody,
   Alert,
+  UncontrolledCollapse,
 } from 'reactstrap';
 
 const style = {
@@ -54,7 +55,7 @@ function Explore() {
 
   const createCards = (image) => {
     return (
-      <Col sm="12" className="large-card-container" key={image.id}>
+      <Col sm="7" className="large-card-container" key={image.id}>
         <Card>
           <div className="dim-image-container">
             <CardHeader className="display-4">{image.model}</CardHeader>
@@ -92,32 +93,41 @@ function Explore() {
               <h1 className="display-3">Explore Models!</h1>
             </Col>
             <Col sm="2">
-              <ButtonToggle className="header-button" >Filter</ButtonToggle>
+              <Button  className="header-button" id="filterToggle">Filter</Button>
             </Col>
           </Row>
-          
+          <Row>
+            <UncontrolledCollapse toggler="#filterToggle">
+              <Card>
+                <CardBody>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni, voluptas debitis
+                  similique porro a molestias consequuntur earum odio officiis natus, amet hic, iste sed
+                  dignissimos esse fuga! Minus, alias.
+                </CardBody>
+              </Card>
+            </UncontrolledCollapse>
+          </Row>
           <hr className="my-3" />
-            <Row>
+          <Row>
+            <InfiniteScroll
+              dataLength={imageList.length}
+              next={fetchMoreData}
+              hasMore={isScrollable}
+              loader={<h4 className="display-4">Loading... </h4>}
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <div className="lead" tag="h5">Yay! You have seen it all</div>
+                </p>
+              }
+            >
+              {imageList && imageList.map((image) => createCards(image))}
+            </InfiniteScroll>
 
-              <InfiniteScroll
-                dataLength={imageList.length}
-                next={fetchMoreData}
-                hasMore={isScrollable}
-                loader={<h4 className="display-4">Loading... </h4>}
-                endMessage={
-                  <p style={{ textAlign: 'center' }}>
-                    <div className="lead" tag="h5">Yay! You have seen it all</div>
-                  </p>
-                }
-              >
-                {imageList && imageList.map((image) => createCards(image))}
-              </InfiniteScroll>
-
-              {imageList.length === 0 && <p className="lead">There are no images to view. Maybe you can upload some of your own!</p>}
-              {imageListError && <Alert color="danger">
-                {imageListError}
-              </Alert>}
-            </Row>
+            {imageList.length === 0 && <p className="lead">There are no images to view. Maybe you can upload some of your own!</p>}
+            {imageListError && <Alert color="danger">
+              {imageListError}
+            </Alert>}
+          </Row>
         </Col>
         <Col sm="3"></Col>
       </Row>

@@ -28,21 +28,21 @@ function Personal({user}) {
       <Row>
         <Col sm="3"></Col>
         <Col>
-            <Row>
-              <Col>
-                <h1 className="display-3">{user.firstName} {user.lastName}</h1>
-              </Col>
-              <Col sm="2">
-                {!isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Create</ButtonToggle>}
-                {isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Images</ButtonToggle>}
-              </Col>
-            </Row>
-            <hr className="my-3" />
+          <Row>
+            <Col>
+              <h1 className="display-3">{user.firstName} {user.lastName}</h1>
+            </Col>
+            <Col sm="2">
+              {!isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Create</ButtonToggle>}
+              {isCreate && <ButtonToggle className="header-button" onClick={toggleIsCreate}>Images</ButtonToggle>}
+            </Col>
+          </Row>
+          <hr className="my-3" />
 
 
 
-          {!isCreate && <PersonalImages />}
-          {isCreate && <ImageForm afterCreatePost={afterCreatePost} />}
+        {!isCreate && <PersonalImages />}
+        {isCreate && <ImageForm afterCreatePost={afterCreatePost} />}
 
 
 
