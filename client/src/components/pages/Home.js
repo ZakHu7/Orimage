@@ -1,63 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 
 import {
   Container,
   Row,
   Jumbotron,
   Col,
-  InputGroup,
-  InputGroupAddon,
-  Input,
-  Button,
-  FormGroup
 } from 'reactstrap';
 
 import gif from '../../media/origami_01.gif';
 
 function Home() {
-
-  const [weather, setWeather] = useState(null);
-  const [cityList, setCityList] = useState([]);
-  const [newCityName, setNewCityName] = useState('');
-
-  useEffect(() => {
-    getCityList();
-  }, []);
-
-  function getCityList() {
-    fetch(`/api/cities`)
-    .then(res => res.json())
-    .then(res => {
-      var newCityList = res.map(r => r.city_name);
-      setCityList(newCityList);
-    })
-  }
-
-  function handleAddCity() {
-    fetch(`/api/cities`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ city: newCityName })
-    })
-    .then(res => res.json())
-    .then(res => {
-      getCityList();
-      setNewCityName('');
-    })
-  }
-
-  function handleChangeCity(e) {
-    getWeather(e.target.value);
-  }
-
-  function getWeather(city) {
-    fetch(`/api/weather/${city}`)
-    .then(res => res.json())
-    .then(res => {
-      console.log(res);
-      setWeather(res);
-    })
-  }
 
   return (
     <Container fluid>

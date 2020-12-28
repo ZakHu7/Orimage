@@ -16,14 +16,6 @@ import {
   UncontrolledCollapse,
 } from 'reactstrap';
 
-const style = {
-  height: 30,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8
-};
-
-
 function Explore() {
   const [imageList, setImageList] = useState([]);
   const [imageListError, setImageListError] = useState("");
