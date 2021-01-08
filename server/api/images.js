@@ -59,6 +59,23 @@ router.get('/all-images/:lastDateTime', (req, res) => {
   })
 });
 
+router.get('/filtered-images/:lastDateTime', (req, res) => {
+  const lastDateTime = req.params.lastDateTime;
+  const filters = {
+    designed_by: req.query.designed_by,
+    folded_by: req.query.folded_by,
+    category: req.query.category,
+    model: req.query.model,
+    difficulty: req.query.difficulty,
+  }
+  Images.getFilteredImages(lastDateTime, filters, (images, err) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(images);
+  })
+});
+
 router.post('/delete-image', (req, res) => {
   var imageId = req.body.imageId;
   var userId = req.body.userId;

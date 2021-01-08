@@ -28,7 +28,7 @@ function DifficultyBar({difficulty}) {
       setDifficultyList(newDifficultyList);
     }
     calculateBarLength();
-  }, [])
+  }, [difficulty])
 
   return (
     <Progress multi>

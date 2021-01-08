@@ -14,8 +14,7 @@ import {
   Spinner,
   Col,
 } from 'reactstrap';
-
-const difficultyList = ["Easy", "Normal", "Hard"];
+import {difficultyList} from "../helper/DifficultyList";
 
 function ImageForm({afterCreatePost, name}) {
   const [upImg, setUpImg] = useState(null);
@@ -226,7 +225,7 @@ function ImageForm({afterCreatePost, name}) {
                 {difficultyList[1]}
               </Label>
             </FormGroup>
-            <FormGroup check disabled>
+            <FormGroup check>
               <Label check>
                 <Input type="radio" name="difficulty" checked={difficulty === difficultyList[2]}
                 value={difficultyList[2]} onChange={(e) => handleInputChange(e, setDifficulty, 'difficulty')} />{' '}

@@ -53,6 +53,44 @@ class Images {
     })
   }
 
+  static getFilteredImages(lastDateTime, filters, callback) {
+    let filtersString = "";
+    if (filters.designed_by !== undefined)
+      filtersString += `AND LOWER(designed_by) = LOWER('${filters.designed_by}') `;
+    if (filters.folded_by !== undefined)
+      filtersString += `AND LOWER(folded_by) = LOWER('${filters.folded_by}') `;
+    if (filters.category !== undefined)
+      filtersString += `AND LOWER(category) = LOWER('${filters.category}') `;
+    if (filters.model !== undefined)
+      filtersString += `AND LOWER(model) = LOWER('${filters.model}') `;
+    if (filters.difficulty !== undefined) {
+      if (typeof filters.difficulty === "string") {
+        filtersString += `AND LOWER(difficulty) = LOWER('${filters.difficulty}') `;
+      } else {
+        const difficultyArray = filters.difficulty.map(x => `LOWER('${x}')`)
+        filtersString += `AND LOWER(difficulty) in (${difficultyArray}) `;
+      }
+    }
+    lastDateTime = lastDateTime.replace("+","");
+
+    const a = `SELECT * from images
+    WHERE created_on < ${lastDateTime} 
+    ${filtersString}
+    ORDER BY created_on DESC LIMIT 3`;
+
+    db.query(
+      `SELECT * from images
+      WHERE created_on < $1 
+      ${filtersString}
+      ORDER BY created_on DESC LIMIT 3`,
+      [lastDateTime], (err, res) => {
+      if (err.error) {
+        return callback(null, err);
+      }
+      callback(res);
+    })
+  }
+
   static deleteImage(id, callback) {
     db.query(
       `DELETE FROM images

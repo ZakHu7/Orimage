@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import InfiniteScroll from 'react-infinite-scroll-component';
 import DifficultyBar from "../helper/DifficultyBar";
+import Filter from "../helper/Filter";
 import {
   Container,
   Row,
@@ -22,12 +23,13 @@ function Explore() {
   // pointer to where the last image fetched is - used for infinite scroll
   const [lastImageCreatedDate, setLastImageCreatedDate] = useState(new Date(Date.now()).toISOString());
   const [isScrollable, setIsScrollable] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isFilteredQuery, setIsFilteredQuery] = useState(false);
   
   const getAllImages = () => {
     fetch(`/api/images/all-images/${lastImageCreatedDate}`)
     .then(res => res.json())
     .then(res => {
-      console.log(res);
       if (res.error) {
         setImageListError(res.error);
       } else {
@@ -40,10 +42,30 @@ function Explore() {
       }
     })
   }
+  
+  const afterFilterSubmit = (res, reset) => {
+    if (res.error) {
+      setImageListError(res.error);
+    } else {
+      if (res.length === 0) {
+        setIsScrollable(false);
+      }
+      if (reset) {
+        setImageList(res);
+        if (res.length !== 0 && !isScrollable) {
+          setIsScrollable(true);
+        }
+      } else {
+        setImageList(imageList.concat(res));
+      }
+      setIsFilteredQuery(true);
+      setIsScrolled(false);
+    }
+  }
 
   useEffect(() => {
     getAllImages();
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const createCards = (image) => {
     return (
@@ -72,7 +94,10 @@ function Explore() {
   }
 
   const fetchMoreData = () => {
-    getAllImages();
+    if (!isFilteredQuery)
+      getAllImages();
+    else 
+      setIsScrolled(true);
   };
 
   return (
@@ -83,20 +108,28 @@ function Explore() {
           <Row>
             <Col>
               <h1 className="display-3">Explore Models!</h1>
+              <h1 className="display-3">{imageList.length}</h1>
             </Col>
             <Col sm="2">
               <Button  className="header-button" id="filterToggle">Filter</Button>
             </Col>
           </Row>
           <Row>
-            <UncontrolledCollapse toggler="#filterToggle">
-              <Card>
-                <CardBody>
-                  Filter is currently unavailable
-                </CardBody>
-              </Card>
-            </UncontrolledCollapse>
+            <Col sm="12">
+              <UncontrolledCollapse toggler="#filterToggle">
+                <Card>
+                  <CardBody>
+                    <Filter isScrolled={isScrolled} afterFilterSubmit={afterFilterSubmit}/>
+                  </CardBody>
+                </Card>
+              </UncontrolledCollapse>
+              {imageListError && <Alert color="danger">
+                {imageListError}
+              </Alert>}
+            </Col>
           </Row>
+          
+          {imageList.length === 0 && <p className="lead">There are no images to view. Maybe you can upload some of your own!</p>}
           <hr className="my-3" />
           <Row>
             <InfiniteScroll
@@ -105,19 +138,15 @@ function Explore() {
               hasMore={isScrollable}
               loader={<h4 className="display-4">Loading... </h4>}
               endMessage={
-                <p style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
                   <hr className="my-3" />
                   <div className="lead" tag="h5">Yay! You have seen it all</div>
-                </p>
+                </div>
               }
             >
               {imageList && imageList.map((image) => createCards(image))}
             </InfiniteScroll>
-
-            {imageList.length === 0 && <p className="lead">There are no images to view. Maybe you can upload some of your own!</p>}
-            {imageListError && <Alert color="danger">
-              {imageListError}
-            </Alert>}
+            
           </Row>
         </Col>
         <Col sm="3"></Col>
