@@ -1,9 +1,13 @@
-# imageRepo
+# Orimage
+## Intro
+View the application here: https://orimage.herokuapp.com/
 
-Work in Progress.
+Image hosting website for origami models!
+Explore models by animals, designers and more to inspire your next creation.
 
-React, Express, PostgreSql.
+Users must be logged in using Okta to create/delete posts.
 
-S3 stores images.
-
-OAuth2.0 with Okta
+## More information
+Built using Node.js, Express, React and PostgreSQL.
+Authentication with Okta.
+Images stored in S3.
