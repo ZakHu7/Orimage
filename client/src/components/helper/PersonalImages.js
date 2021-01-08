@@ -18,12 +18,12 @@ import {
 
 function PersonalImages() {
   const [imageList, setImageList] = useState([]);
-  const [imageListError, setImageListError] = useState("");
+  const [imageListError, setImageListError] = useState("Error, you are not the owner of this image");
   const [imageToDelete, setImageToDelete] = useState(null);
 
   const [modal, setModal] = useState(false);
 
-  const toggle = () => setModal(!modal);
+  const toggleDeleteModal = () => setModal(!modal);
   
   const getUserImages = () => {
     fetch(`/api/images/user-images`)
@@ -34,6 +34,7 @@ function PersonalImages() {
         setImageListError(res.error);
       } else {
         setImageList(res);
+        setImageListError("");
       }
     })
   }
@@ -51,17 +52,19 @@ function PersonalImages() {
     .then(res => res.json())
     .then(res => {
       if (res.error) {
-        console.log(res);
+        toggleDeleteModal();
+        setImageListError(res.error);
       } else {
-        toggle();
+        toggleDeleteModal();
         getUserImages();
+        setImageListError("");
       }
     })
   }
 
   const handleDeleteChange = (image, e) => {
     console.log(image);
-    toggle();
+    toggleDeleteModal();
     setImageToDelete(image);
   };
 
@@ -96,21 +99,23 @@ function PersonalImages() {
   return (
     <Jumbotron className="personal-jumbotron">
       <Row>
-        {imageListError && <Alert color="danger">
-          {imageListError}
-        </Alert>}
+        {imageListError && <Col sm="12">
+          <Alert color="danger">
+            {imageListError}
+          </Alert>
+        </Col>}
         {imageList && imageList.map((image) => createPersonalCards(image))}
         {imageList.length === 0 && <p className="lead">Create and upload your own images. Then view them here!</p>}
       </Row>
 
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Permanently Delete Image</ModalHeader>
+      <Modal isOpen={modal} toggle={toggleDeleteModal}>
+        <ModalHeader toggle={toggleDeleteModal}>Permanently Delete Image</ModalHeader>
         <ModalBody>
           Are you sure you want to delete this image?
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleDeleteImage}>Yes</Button>{' '}
-          <Button color="secondary" onClick={toggle}>No</Button>
+          <Button color="secondary" onClick={toggleDeleteModal}>No</Button>
         </ModalFooter>
       </Modal>
     </Jumbotron>

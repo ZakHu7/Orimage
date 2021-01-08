@@ -66,19 +66,32 @@ router.post('/delete-image', (req, res) => {
 
   if (userId !== req.user.id)
       return res.status(400).send({error: "Please login to delete this image"});
-  S3.delete(key, (result, err) => {
-    if (err) {
+  // check if the user is the one who created the image
+  Images.getImageById(imageId, (image, err) => {
+    if (err)
       return res.json(err);
-    }
-    Images.deleteImage(imageId, (images, err) => {
-      if (err) {
+    if (image.length === 0)
+      return res.status(400).send({error: "This image does not exist"});
+    if (image[0].user_id !== req.user.id)
+      return res.status(400).send({error: "Error, you are not the owner of this image"});
+
+    S3.delete(key, (result, err) => {
+      if (err)
         return res.json(err);
-      }
-      return res.json(images);
+
+      Images.deleteImage(imageId, (images, err) => {
+        if (err)
+          return res.json(err);
+
+        return res.json(images);
+      })
     })
-  })
+  }
+
+  )
 });
 
+// test deletion only on s3
 router.post('/image-delete', (req, res) => {
   var key = req.body.key;
 

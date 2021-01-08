@@ -92,7 +92,7 @@ function Explore() {
             <UncontrolledCollapse toggler="#filterToggle">
               <Card>
                 <CardBody>
-                  Filter is not implemented at this time
+                  Filter is currently unavailable
                 </CardBody>
               </Card>
             </UncontrolledCollapse>

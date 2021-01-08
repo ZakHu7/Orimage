@@ -22,7 +22,19 @@ class Images {
       ORDER BY created_on DESC`,
     [user_id], (err, res) => {
       if (err.error) {
-        return callback(null, errerr);
+        return callback(null, err.error);
+      }
+      callback(res);
+    })
+  }
+
+  static getImageById(image_id, callback) {
+    db.query(
+      `SELECT * from images
+      WHERE id = $1`,
+    [image_id], (err, res) => {
+      if (err.error) {
+        return callback(null, err.error);
       }
       callback(res);
     })
