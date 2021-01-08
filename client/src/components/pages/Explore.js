@@ -108,7 +108,6 @@ function Explore() {
           <Row>
             <Col>
               <h1 className="display-3">Explore Models!</h1>
-              <h1 className="display-3">{imageList.length}</h1>
             </Col>
             <Col sm="2">
               <Button  className="header-button" id="filterToggle">Filter</Button>

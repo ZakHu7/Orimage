@@ -44,7 +44,7 @@ class Images {
     db.query(
       `SELECT * from images
       WHERE created_on < $1
-      ORDER BY created_on DESC LIMIT 3`,
+      ORDER BY created_on DESC LIMIT 4`,
       [lastDateTime], (err, res) => {
       if (err.error) {
         return callback(null, err);
@@ -82,7 +82,7 @@ class Images {
       `SELECT * from images
       WHERE created_on < $1 
       ${filtersString}
-      ORDER BY created_on DESC LIMIT 3`,
+      ORDER BY created_on DESC LIMIT 4`,
       [lastDateTime], (err, res) => {
       if (err.error) {
         return callback(null, err);
