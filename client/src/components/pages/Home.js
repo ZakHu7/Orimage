@@ -23,7 +23,7 @@ function Home() {
               </Col>
               <Col sm="8">
                 <h1 className="display-3">ImageRepo</h1>
-                <p className="lead">View and upload your of origami!</p>
+                <p className="lead">View and upload your pictures of origami!</p>
                 <hr className="my-3" />
                 <img src={gif} className="crane-gif"></img>
                 <hr className="my-3" />
